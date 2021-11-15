@@ -1,9 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"log"
 )
 
 func main() {
-	fmt.Println("Hello world from inquestitobot!")
+	dbi := NewDBInstance()
+	id, err := dbi.Insert(NewDocument("test", "test.com", "A test"))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	log.Println(id)
 }
