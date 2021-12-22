@@ -1,14 +1,22 @@
 package main
 
 import (
+	"io"
 	"log"
+	"os"
 )
 
 func main() {
-	dbi := NewDBInstance()
-	id, err := dbi.Insert(NewDocument("test", "test.com", "A test"))
+	logf, err := os.OpenFile("inquestitobot.log", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	log.Println(id)
+
+	mw := io.MultiWriter(logf, os.Stdout)
+	log.SetOutput(mw)
+
+	p := NewProcessor()
+	for {
+		p.process()
+	}
 }
